@@ -4,23 +4,23 @@ import { UpdateCvDto } from './dto/update-cv.dto';
 
 @Injectable()
 export class CvService {
-  create(createCvDto: CreateCvDto) {
+  async create(createCvDto: CreateCvDto) {
     return 'This action adds a new cv';
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all cv`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} cv`;
   }
 
-  update(id: number, updateCvDto: UpdateCvDto) {
+  async update(id: number, updateCvDto: UpdateCvDto) {
     return `This action updates a #${id} cv`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} cv`;
   }
 }
