@@ -1,4 +1,5 @@
 import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import {
   randFilePath,
@@ -7,16 +8,16 @@ import {
   randLastName,
   randNumber,
 } from '@ngneat/falso';
-import { CvService } from 'src/cv/cv.service';
+import { Cv } from 'src/cv/entities/cv.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CvSeederService implements OnApplicationBootstrap {
   constructor(
-    @Inject()
-    private readonly cvService: CvService,
+    @InjectRepository(Cv)
+    private readonly cvRepository: Repository<Cv>,
   ) {}
   async onApplicationBootstrap() {
-    if ((await this.cvService.findAll()).length === 0) {
       await this.seed();
     }
   }
@@ -29,8 +30,10 @@ export class CvSeederService implements OnApplicationBootstrap {
       job: randJobTitle(),
       path: randFilePath(),
       CIN: `${randNumber({ min: 1000000, max: 9999999 })}`,
+      userId: randNumber({ min: 1, max: 10 }),
+      skills: [randNumber({ min: 1, max: 10 })],
     }));
-    await this.cvService.create(fakeCvs);
+    await this.cvRepository.create(fakeCvs);
     console.log(`Seeded ${numberOfCvs} CVs`);
     console.log(fakeCvs);
   }

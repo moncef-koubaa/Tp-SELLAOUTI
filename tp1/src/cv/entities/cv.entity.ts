@@ -1,4 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Skill } from 'src/skill/entities/skill.entity';
+import { User } from 'src/user/entities/user.entity';
+import { Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export class Cv {
   @PrimaryGeneratedColumn()
@@ -15,4 +17,8 @@ export class Cv {
   job: string;
   @Column()
   path: string;
+  @ManyToOne(() => User, (user) => user.cvs)
+  user: User;
+  @ManyToMany(() => Skill, (skill) => skill.cvs)
+  skills: Skill[];
 }
