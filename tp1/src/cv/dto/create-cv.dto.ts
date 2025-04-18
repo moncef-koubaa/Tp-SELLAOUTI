@@ -7,8 +7,8 @@ export class CreateCvDto {
   firstName: string;
   @IsNumber()
   age: number;
-  @IsString()
-  CIN: string;
+  @IsNumber()
+  CIN: number;
   @IsString()
   job: string;
   @IsString()

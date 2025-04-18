@@ -1,7 +1,13 @@
 import { Skill } from 'src/skill/entities/skill.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+@Entity()
 export class Cv {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,8 +17,8 @@ export class Cv {
   firstName: string;
   @Column()
   age: number;
-  @Column()
-  CIN: string;
+  @Column({ unique: true })
+  CIN: number;
   @Column()
   job: string;
   @Column()
