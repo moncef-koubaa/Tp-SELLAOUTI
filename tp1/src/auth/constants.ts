@@ -1,5 +1,8 @@
-export const jwtConstants = {
-  secret:
-    'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
-  expireIn: '60s',
-};
+import { ConfigService } from '@nestjs/config';
+
+export const getJwtConfig = (configService: ConfigService) => ({
+  secret: configService.get<string>('JWT_SECRET'),
+  signOptions: {
+    expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+  },
+});
