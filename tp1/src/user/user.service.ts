@@ -20,18 +20,24 @@ export class UserService {
     return bcrypt.hash(password, salt);
   }
   async create(createUserDto: CreateUserDto) {
-    const cvs = await this.cvRepository
-      .createQueryBuilder('cv')
-      .where('cv.id IN (:...ids)', { ids: createUserDto.cvIds })
-      .getMany();
+    let cvs = new Array<Cv>();
+
+    if (createUserDto.cvIds && createUserDto.cvIds.length > 0) {
+      cvs = await this.cvRepository
+        .createQueryBuilder('cv')
+        .where('cv.id IN (:...ids)', { ids: createUserDto.cvIds })
+        .getMany();
+
+      if (cvs.length !== createUserDto.cvIds.length) {
+        throw new Error(`Some CVs not found`);
+      }
+    }
     const password = await this.hashPassword(createUserDto.password);
     createUserDto.password = password;
-    if (cvs.length !== createUserDto.cvIds.length) {
-      throw new Error(`Some CVs not found`);
-    }
+
     const user = this.userRepository.create({
       ...createUserDto,
-      cvs: cvs,
+      cvs,
     });
     return this.userRepository.save(user);
   }

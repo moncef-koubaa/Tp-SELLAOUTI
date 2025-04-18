@@ -2,11 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Cv } from '../cv/entities/cv.entity';
 import { CvSeederService } from './cv.seed.service';
-import { User } from 'src/user/entities/user.entity';
-import { Skill } from 'src/skill/entities/skill.entity';
-import { CvModule } from 'src/cv/cv.module';
-import { UserModule } from 'src/user/user.module';
-import { SkillModule } from 'src/skill/skill.module';
+import { User } from '../user/entities/user.entity';
+import { Skill } from '../skill/entities/skill.entity';
 
 @Module({
   imports: [
@@ -21,6 +18,7 @@ import { SkillModule } from 'src/skill/skill.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    TypeOrmModule.forFeature([User, Cv, Skill]),
   ],
   providers: [CvSeederService],
   exports: [CvSeederService],

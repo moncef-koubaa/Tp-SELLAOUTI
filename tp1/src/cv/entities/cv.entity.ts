@@ -1,8 +1,9 @@
-import { Skill } from 'src/skill/entities/skill.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Skill } from '../../skill/entities/skill.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -26,5 +27,6 @@ export class Cv {
   @ManyToOne(() => User, (user) => user.cvs)
   user: User;
   @ManyToMany(() => Skill, (skill) => skill.cvs)
+  @JoinTable()
   skills: Skill[];
 }
