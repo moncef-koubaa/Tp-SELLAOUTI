@@ -14,11 +14,11 @@ import { ImageModule } from './image/image.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
+      host: 'localhost',
       port: 5432,
-      username: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASS || 'your_password',
-      database: process.env.DB_NAME || 'your_database_name',
+      username: 'admin', // Changed to match Docker config
+      password: 'admin', // Changed to match Docker config
+      database: 'tp', // Changed to match Docker config
       entities: [User, Cv, Skill],
       synchronize: true,
       autoLoadEntities: true,
