@@ -1,5 +1,14 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Skill } from '../../skill/entities/skill.entity';
+import { User } from '../../user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+@Entity()
 export class Cv {
   @PrimaryGeneratedColumn()
   id: number;
@@ -9,10 +18,15 @@ export class Cv {
   firstName: string;
   @Column()
   age: number;
-  @Column()
-  CIN: string;
+  @Column({ unique: true })
+  CIN: number;
   @Column()
   job: string;
   @Column()
   path: string;
+  @ManyToOne(() => User, (user) => user.cvs)
+  user: User;
+  @ManyToMany(() => Skill, (skill) => skill.cvs)
+  @JoinTable()
+  skills: Skill[];
 }
