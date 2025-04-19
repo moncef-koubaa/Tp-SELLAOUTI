@@ -72,11 +72,12 @@ export class CvService {
 
   async getCvs(filterDto: GetCvFilterDto): Promise<Cv[]> {
     const { critere, age } = filterDto;
+    console.log('critere', critere, 'age', age);
     const query = this.cvRepository.createQueryBuilder('cv');
 
     if (critere) {
       query.andWhere(
-        '(cv.name ILIKE :c OR cv.firstname ILIKE :c OR cv.job ILIKE :c)',
+        '(cv.name ILIKE :c OR cv.firstName ILIKE :c OR cv.job ILIKE :c)',
         { c: `%${critere}%` },
       );
     }
