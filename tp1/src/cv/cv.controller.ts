@@ -9,12 +9,15 @@ import {
   Version,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { CvService } from './cv.service';
+import { GetCvFilterDto } from './dto/get-cv-filter.dto';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ForbiddenException } from '@nestjs/common';
+import { Cv } from './entities/cv.entity';
 
 @Controller('cv')
 export class CvController {
@@ -109,4 +112,12 @@ export class CvController {
   removeV2(@Param('id') id: string) {
     return this.cvService.remove(+id);
   }
+
+  @Version('2')
+  @Get()
+  async getCvs(
+    @Query() filterDto: GetCvFilterDto) : Promise<Cv[]> {
+      return this.cvService.getCvs(filterDto);
+}
+  
 }

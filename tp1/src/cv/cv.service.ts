@@ -6,6 +6,7 @@ import { Cv } from './entities/cv.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Skill } from 'src/skill/entities/skill.entity';
+import { GetCvFilterDto } from './dto/get-cv-filter.dto';
 
 @Injectable()
 export class CvService {
@@ -67,5 +68,23 @@ export class CvService {
 
   async remove(id: number) {
     return this.cvRepository.delete(id);
+  }
+
+  async getCvs(filterDto: GetCvFilterDto): Promise<Cv[]> {
+    const { critere, age } = filterDto;
+    const query = this.cvRepository.createQueryBuilder('cv');
+
+    if (critere) {
+      query.andWhere(
+        '(cv.name ILIKE :c OR cv.firstname ILIKE :c OR cv.job ILIKE :c)',
+        { c: `%${critere}%` },
+      );
+    }
+
+    if (age !== undefined) {
+      query.andWhere('cv.age = :age', { age });
+    }
+
+    return await query.getMany();
   }
 }
