@@ -23,7 +23,6 @@ import { Cv } from './entities/cv.entity';
 export class CvController {
   constructor(private readonly cvService: CvService) {}
 
-
   @Version('1')
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -81,43 +80,48 @@ export class CvController {
 
     return this.cvService.remove(+id);
   }
+  //
+  // // Version 2 - Non protégée
+  // @Version('2')
+  // @Post()
+  // createV2(@Body() createCvDto: CreateCvDto) {
+  //   return this.cvService.create(createCvDto);
+  // }
+  //
+  // @Version('2')
+  // @Get()
+  // findAllV2() {
+  //   return this.cvService.findAll();
+  // }
 
-  // Version 2 - Non protégée
+  // @Version('2')
+  // @Get(':id')
+  // findOneV2(@Param('id') id: string) {
+  //   return this.cvService.findOne(+id);
+  // }
+  //
+  // @Version('2')
+  // @Patch(':id')
+  // updateV2(@Param('id') id: string, @Body() updateCvDto: UpdateCvDto) {
+  //   return this.cvService.update(+id, updateCvDto);
+  // }
+  //
+  // @Version('2')
+  // @Delete(':id')
+  // removeV2(@Param('id') id: string) {
+  //   return this.cvService.remove(+id);
+  // }
+
   @Version('2')
-  @Post()
-  createV2(@Body() createCvDto: CreateCvDto) {
-    return this.cvService.create(createCvDto);
+  @Get('filter')
+  getCvs(
+      @Query() filterDto: GetCvFilterDto // Auto-validated by NestJS
+  ) {
+    // console.log('critere', critere, 'age', age);
+    // const filterDto: GetCvFilterDto=new GetCvFilterDto();
+    // filterDto.age = age;
+    // filterDto.critere = critere;
+    return this.cvService.getCvs(filterDto);
   }
 
-  @Version('2')
-  @Get()
-  findAllV2() {
-    return this.cvService.findAll();
-  }
-
-  @Version('2')
-  @Get(':id')
-  findOneV2(@Param('id') id: string) {
-    return this.cvService.findOne(+id);
-  }
-
-  @Version('2')
-  @Patch(':id')
-  updateV2(@Param('id') id: string, @Body() updateCvDto: UpdateCvDto) {
-    return this.cvService.update(+id, updateCvDto);
-  }
-
-  @Version('2')
-  @Delete(':id')
-  removeV2(@Param('id') id: string) {
-    return this.cvService.remove(+id);
-  }
-
-  @Version('2')
-  @Get()
-  async getCvs(
-    @Query() filterDto: GetCvFilterDto) : Promise<Cv[]> {
-      return this.cvService.getCvs(filterDto);
-}
-  
 }
