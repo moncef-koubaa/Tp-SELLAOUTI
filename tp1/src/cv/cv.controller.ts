@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Version, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Version,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { CvService } from './cv.service';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
@@ -16,7 +27,7 @@ export class CvController {
   createV1(@Body() createCvDto: CreateCvDto, @Request() req) {
     return this.cvService.create({
       ...createCvDto,
-      userId: req.user.userId // Injection du userId depuis le token
+      userId: req.user.userId, // Injection du userId depuis le token
     });
   }
 
@@ -37,11 +48,17 @@ export class CvController {
   @Version('1')
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async updateV1(@Param('id') id: string, @Body() updateCvDto: UpdateCvDto, @Request() req) {
+  async updateV1(
+    @Param('id') id: string,
+    @Body() updateCvDto: UpdateCvDto,
+    @Request() req,
+  ) {
     const cv = await this.cvService.findOne(+id);
 
     if (cv?.user.id !== req.user.userId) {
-      throw new ForbiddenException('Vous ne pouvez modifier que vos propres CV');
+      throw new ForbiddenException(
+        'Vous ne pouvez modifier que vos propres CV',
+      );
     }
 
     return this.cvService.update(+id, updateCvDto);
@@ -54,7 +71,9 @@ export class CvController {
     const cv = await this.cvService.findOne(+id);
 
     if (cv?.user.id !== req.user.userId) {
-      throw new ForbiddenException('Vous ne pouvez supprimer que vos propres CV');
+      throw new ForbiddenException(
+        'Vous ne pouvez supprimer que vos propres CV',
+      );
     }
 
     return this.cvService.remove(+id);
