@@ -23,7 +23,7 @@ import { Cv } from './entities/cv.entity';
 export class CvController {
   constructor(private readonly cvService: CvService) {}
 
-  // Version 1 - Protégée par JWT
+
   @Version('1')
   @UseGuards(JwtAuthGuard)
   @Post()
