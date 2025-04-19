@@ -9,9 +9,14 @@ import { User } from './user/entities/user.entity';
 import { Cv } from './cv/entities/cv.entity';
 import { Skill } from './skill/entities/skill.entity';
 import { ImageModule } from './image/image.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes variables available everywhere
+      envFilePath: '.env', // Explicit path (optional)
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
